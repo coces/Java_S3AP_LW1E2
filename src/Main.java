@@ -1,7 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.text.ParseException;
 
 public class Main {
     JFrame main_frame;
@@ -35,74 +38,104 @@ public class Main {
 
     private void calcPerimetrNDisplay(){
         String temp;
-        Double A_x, A_y, B_x, B_y, C_x, C_y;
+        Double A_x = null, A_y = null, B_x = null, B_y = null, C_x = null, C_y = null;
+        Boolean flag = true;
         try {
             temp = apex_A_x_tf.getText();
             A_x = Double.parseDouble(temp);
         }
         catch (Exception e){
-            errorDisplay("Не удалось считать поля координат!<br>Проверьте правильность ввода!");
-            apex_A_x_tf.setText("");
-            apex_A_x_tf.requestFocus();
-            return;
+            if(e.getMessage() == "empty String"){
+                errorDisplay("Не все строки заполнены!");
+                flag = false;
+            }
+            else {
+                errorDisplay("Не удалось считать поля координат!<br>Проверьте правильность ввода!");
+                apex_A_x_tf.requestFocus();
+                return;
+            }
         }
         try {
             temp = apex_A_y_tf.getText();
             A_y = Double.parseDouble(temp);
         }
         catch (Exception e){
-            errorDisplay("Не удалось считать поля координат!<br>Проверьте правильность ввода!");
-            apex_A_y_tf.setText("");
-            apex_A_y_tf.requestFocus();
-            return;
+            if(e.getMessage() == "empty String"){
+                errorDisplay("Не все строки заполнены!");
+                flag = false;
+            }
+            else {
+                errorDisplay("Не удалось считать поля координат!<br>Проверьте правильность ввода!");
+                apex_A_y_tf.requestFocus();
+                return;
+            }
         }
         try {
             temp = apex_B_x_tf.getText();
             B_x = Double.parseDouble(temp);
         }
         catch (Exception e){
-            errorDisplay("Не удалось считать поля координат!<br>Проверьте правильность ввода!");
-            apex_B_x_tf.setText("");
-            apex_B_x_tf.requestFocus();
-            return;
+            if(e.getMessage() == "empty String"){
+                errorDisplay("Не все строки заполнены!");
+                flag = false;
+            }
+            else {
+                errorDisplay("Не удалось считать поля координат!<br>Проверьте правильность ввода!");
+                apex_B_x_tf.requestFocus();
+                return;
+            }
         }
         try {
             temp = apex_B_y_tf.getText();
             B_y = Double.parseDouble(temp);
         }
-        catch (Exception e){
-            errorDisplay("Не удалось считать поля координат!<br>Проверьте правильность ввода!");
-            apex_B_y_tf.setText("");
-            apex_B_y_tf.requestFocus();
-            return;
+        catch (Exception e) {
+            if (e.getMessage() == "empty String") {
+                errorDisplay("Не все строки заполнены!");
+                flag = false;
+            } else {
+                errorDisplay("Не удалось считать поля координат!<br>Проверьте правильность ввода!");
+                apex_B_y_tf.requestFocus();
+                return;
+            }
         }
         try {
             temp = apex_C_x_tf.getText();
             C_x = Double.parseDouble(temp);
         }
         catch (Exception e){
-            errorDisplay("Не удалось считать поля координат!<br>Проверьте правильность ввода!");
-            apex_C_x_tf.setText("");
-            apex_C_x_tf.requestFocus();
-            return;
+            if(e.getMessage() == "empty String"){
+                errorDisplay("Не все строки заполнены!");
+                flag = false;
+            }
+            else {
+                errorDisplay("Не удалось считать поля координат!<br>Проверьте правильность ввода!");
+                apex_C_x_tf.requestFocus();
+                return;
+            }
         }
         try {
             temp = apex_C_y_tf.getText();
             C_y = Double.parseDouble(temp);
         }
         catch (Exception e){
-            errorDisplay("Не удалось считать поля координат!<br>Проверьте правильность ввода!");
-            apex_C_y_tf.setText("");
-            apex_C_y_tf.requestFocus();
-            return;
+            if(e.getMessage() == "empty String"){
+                errorDisplay("Не все строки заполнены!");
+                flag = false;
+            }
+            else {
+                errorDisplay("Не удалось считать поля координат!<br>Проверьте правильность ввода!");
+                apex_C_y_tf.requestFocus();
+                return;
+            }
         }
+        if (!flag) return;
         Double AB = calcSide(A_x, B_x, A_y, B_y);
         Double BC = calcSide(B_x, C_x, B_y, C_y);
         Double CA = calcSide(C_x, A_x, C_y, A_y);
-        if (AB + BC <= CA || AB + CA <= BC || BC + CA <= AB){
+        if (AB + BC <= CA || AB + CA <= BC || BC + CA <= AB) {
             errorDisplay("Треугольник не существует!");
-        }
-        else {
+        } else {
             String result = String.format("%.3f", AB + BC + CA);
             result_label.setText("Периметр треугольника: " + result);
         }
@@ -181,7 +214,13 @@ public class Main {
         calc_button = new JButton();
         calc_button.setBounds(15, 225, 200, 30);
         calc_button.setFont(new Font(result_label.getFont().getFontName(), Font.PLAIN, 10));
-        calc_button.setText("Произвести расчет периметра");
+        calc_button.setText("Завершение программы");
+        calc_button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
         main_frame.add(calc_button);
 
         main_frame.show();
